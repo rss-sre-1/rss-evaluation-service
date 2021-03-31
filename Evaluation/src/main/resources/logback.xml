@@ -33,7 +33,7 @@
 			<key>service</key>
 			<!-- ADD SERVICE NAME TO VALUE TAG-->
 			<!-- example: <value>rss-cart-service</value>-->
-			<value>YOUR-VALUE-HERE</value>
+			<value>rss-evaluation-service</value>
 		</additionalField>
 
 		<bufferCapacity>16777216</bufferCapacity>
