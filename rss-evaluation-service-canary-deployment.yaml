@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rss-evaluation-deployment
+  name: rss-evaluation-canary-deployment
   namespace: rss-evaluation
   labels:
     app: rss-evaluation-service
@@ -10,13 +10,15 @@ spec:
   selector:
     matchLabels:
       app: rss-evaluation-service
+      track: canary
   template:
     metadata:
       labels:
         app: rss-evaluation-service
+        track: canary
     spec:
       containers:
-      - name: rss-evaluation-service
+      - name: rss-evaluation-service-canary
         image: baronvonfroglok/rss-evaluation-service:latest
         ports:
         - containerPort: 8080
