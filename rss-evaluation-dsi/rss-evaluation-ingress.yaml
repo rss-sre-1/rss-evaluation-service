@@ -16,6 +16,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-	    name: rss-evaluation-service
-            port: 
-	      number: 80
+            name: rss-evaluation-service
+            port:
+              number: 80
