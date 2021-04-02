@@ -34,7 +34,7 @@ spec:
           mountPath: /fluentd/etc/fluent.conf
           subPath: fluent.conf
       - name: rss-evaluation
-        image: sentrurion/rss-evaluation-service:latest
+        image: 855430746673.dkr.ecr.us-east-1.amazonaws.com
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
