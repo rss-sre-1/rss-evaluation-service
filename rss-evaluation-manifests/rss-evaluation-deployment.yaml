@@ -34,7 +34,7 @@ spec:
           mountPath: /fluentd/etc/fluent.conf
           subPath: fluent.conf
       - name: rss-evaluation
-        image: 855430746673.dkr.ecr.us-east-1.amazonaws.com
+        image: 855430746673.dkr.ecr.us-east-1.amazonaws.com/matt-oberlies-sre-p3-rss-evaluation
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
