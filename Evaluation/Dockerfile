@@ -20,4 +20,4 @@ COPY pinpoint.config /pinpoint-agent/pinpoint.config
 
 COPY --from=builder /app/target/*.jar app.jar
 #COPY --from=builder /target/*.jar app.jar
-ENTRYPOINT ["java", "-javaagent:/pinpoint-agent/pinpoint-bootstrap-2.2.2.jar", "-Dpinpoint.config=/pinpoint-agent/pinpoint.config", "-Dpinpoint.container=rss-evaluation", "-Dpinpoint.agentId=rss-evaluation-service", "-Dpinpoint.applicationName=rss-evaluation-service", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-javaagent:/pinpoint-agent/pinpoint-bootstrap-2.2.2.jar", "-Dpinpoint.config=/pinpoint-agent/pinpoint.config", "-Dpinpoint.container=rss-evaluation", "-Dpinpoint.agentId=rss-evaluation", "-Dpinpoint.applicationName=rss-evaluation-service", "-jar", "app.jar"]
