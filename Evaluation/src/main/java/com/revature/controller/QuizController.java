@@ -2,6 +2,8 @@ package com.revature.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -10,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import com.revature.entity.Quiz;
 import com.revature.service.QuizService;
 
-import jdk.internal.org.jline.utils.Log;
-
 @RestController
 @RequestMapping(value="/quiz")
 public class QuizController {
+	
+	private static final Logger log= LoggerFactory.getLogger(QuestionsBankController.class);
 	//
 	@Autowired
 	QuizService qs;
@@ -26,7 +28,7 @@ public class QuizController {
 	public Quiz insertQuiz (@RequestBody Quiz q) {
 		//Log4j
 		MDC.put("Quiz added", q.toString());
-		Log.info("Quiz added"+" "+q.getQuizTopic());
+		log.info("Quiz added"+" "+q.getQuizTopic());
 		System.out.println(q);
 		return this.qs.insertQuiz(q);
 	}
@@ -40,7 +42,7 @@ public class QuizController {
 		Quiz q1 = qs.findById(q.getQuizId());
 		q1.setSubjectId(q1.getSubject().getSubjectId());
 		MDC.put("Pulling by id", q.toString());
-		Log.info("Quiz" + q + "pulled by id");
+		log.info("Quiz" + q + "pulled by id");
 		return q1;
 	}
 	
@@ -56,7 +58,7 @@ public class QuizController {
 		    q1.get(i).setSubjectId(q.getSubjectId());
 		}
 		MDC.put("Pulling by subject", q.toString());
-		Log.info("Quiz" + q + "pulled by id");
+		log.info("Quiz" + q + "pulled by id");
 		return q1;
 	}
 	

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.logging.MDC;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import com.revature.entity.UserQuizScore;
 import com.revature.service.UserQuizScoreService;
 
-import jdk.internal.org.jline.utils.Log;
-
 @RestController
 @RequestMapping(value="/userscore")
 public class UserQuizScoreController {
+	private static final Logger log= LoggerFactory.getLogger(QuestionsBankController.class);
 	
 	@Autowired
 	UserQuizScoreService uqss;
@@ -29,13 +30,13 @@ public class UserQuizScoreController {
 		List<Long> takenQuiz = new ArrayList<>();
 		takenQuiz = uqss.getTakenQuiz(uqs.getUserEmail());
 		MDC.put("Receiving takenQuiz", takenQuiz);
-		Log.info("Getting taken quiz");
+		log.info("Getting taken quiz");
 		return takenQuiz;
 	}
 	
 	@GetMapping(value = "attempts", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<UserQuizScore> findAttempts(@RequestParam("userEmail") String userEmail, @RequestParam("quizId") long quizId) {
-		Log.info("Finding attempts");
+		log.info("Finding attempts");
 		return uqss.findByUserAndQuiz(userEmail, quizId);
 	}
 }
