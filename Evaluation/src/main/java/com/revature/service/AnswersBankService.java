@@ -16,6 +16,9 @@ import com.revature.repo.QuizRepository;
 import com.revature.repo.SubjectRepository;
 import com.revature.repo.UserQuizScoreRepository;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+
 @Service
 public class AnswersBankService {
 
@@ -25,6 +28,15 @@ public class AnswersBankService {
 	AnswersBankRepository abr;
 	UserQuizScoreRepository uqsr;
 	QuizService qs;
+	
+	private MeterRegistry meterRegistry;
+	private Counter quizGradeCounter;
+	private static final String QUIZGRADED = "quiz_graded";
+	
+	public AnswersBankService (MeterRegistry meterRegistry) {
+        this.meterRegistry = meterRegistry;
+        quizGradeCounter = meterRegistry.counter(QUIZGRADED);
+	}
 	
 	//We use constructor auto-wiring to auto-wired multiple repositories.
 	@Autowired
@@ -66,6 +78,7 @@ public class AnswersBankService {
 		public AnswersBank addAnswersBank(AnswersBank ab) {
 			ab.setQuestion(qbr.findById(ab.getQuestion().getQuestionId()).get());
 			ab.setUserScore(uqsr.findById(ab.getUserScore().getUserScoreId()).get());
+			quizGradeCounter.increment(1);
 			return abr.save(ab);
 		}
 		
