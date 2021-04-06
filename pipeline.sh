@@ -7,4 +7,4 @@ docker push 855430746673.dkr.ecr.us-east-1.amazonaws.com/matt-oberlies-sre-p3-rs
 
 
 ./kubectl.sh delete deployment rss-evaluation-deployment;
-./kubectl.sh apply -f rss-evaluation-manifests/rss-evaluation-deployment.yml;
+./kubectl.sh apply -f rss-evaluation-manifests/rss-evaluation-deployment.yaml;
