@@ -4,6 +4,7 @@ Repo="rss-evaluation-service";
 URL="https://github.com/$Org/$Repo/commits/dev";
 BaseFile="11111111112";
 TempFile="11111111111";
+Interval="1m";
 
 rm $TempFile &> /dev/null;
 rm $BaseFile &> /dev/null;
@@ -29,7 +30,7 @@ while [ "$stop" == "" ]; do
   rm $TempFile &> /dev/null;
   stop=$(cat stop 2> /dev/null);
   echo " - ";
-  sleep 1m;
+  sleep $Interval;
 done
 
 rm $BaseFile;
