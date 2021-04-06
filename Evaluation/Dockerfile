@@ -11,7 +11,6 @@ WORKDIR /pinpoint-agent
 ADD https://github.com/pinpoint-apm/pinpoint/releases/download/v2.2.2/pinpoint-agent-2.2.2.tar.gz pinpoint-agent-2.2.2.tar.gz
 RUN tar -xzf pinpoint-agent-2.2.2.tar.gz
 
-
 FROM java:8 as runner
 WORKDIR /app
 COPY --from=extractor /pinpoint-agent/pinpoint-agent-2.2.2/ /pinpoint-agent
