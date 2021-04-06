@@ -4,17 +4,17 @@ metadata:
   name: rss-evaluation-deployment
   namespace: rss-evaluation
   labels:
-    app: rss
+    app: rss-evaluation
 spec:
   replicas: 3
 #  minReadySeconds: 20
   selector:
     matchLabels:
-      app: rss
+      app: rss-evaluation
   template:
     metadata:
       labels:
-        app: rss
+        app: rss-evaluation
     spec:
       volumes:
       - name: config-rss-evaluation-service
