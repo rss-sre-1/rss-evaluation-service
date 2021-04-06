@@ -32,10 +32,12 @@ public class AnswersBankService {
 	private MeterRegistry meterRegistry;
 	private Counter quizGradeCounter;
 	private static final String QUIZGRADED = "quiz_graded";
+	private static final String GRADED = "graded";
+	private static final String TYPE = "type";
 	
 	public AnswersBankService (MeterRegistry meterRegistry) {
         this.meterRegistry = meterRegistry;
-        quizGradeCounter = meterRegistry.counter(QUIZGRADED);
+        quizGradeCounter = meterRegistry.counter(QUIZGRADED, TYPE, GRADED);
 	}
 	
 	//We use constructor auto-wiring to auto-wired multiple repositories.
