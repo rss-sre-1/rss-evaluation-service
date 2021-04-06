@@ -35,13 +35,13 @@ public class AnswersBankService {
 	private static final String GRADED = "graded";
 	private static final String TYPE = "type";
 	
+	@Autowired
 	public AnswersBankService (MeterRegistry meterRegistry) {
         this.meterRegistry = meterRegistry;
         quizGradeCounter = meterRegistry.counter(QUIZGRADED, TYPE, GRADED);
 	}
 	
 	//We use constructor auto-wiring to auto-wired multiple repositories.
-	@Autowired
 	public AnswersBankService(QuestionsBankRepository qbRepository, QuizRepository qRepository, SubjectRepository sRepository, AnswersBankRepository aRepository, UserQuizScoreRepository uRepository, QuizService qService) {
 		this.qbr = qbRepository;
 		this.qr = qRepository;
