@@ -5,6 +5,9 @@ URL="https://github.com/$Org/$Repo/commits/dev";
 BaseFile="11111111112";
 TempFile="11111111111";
 
+rm $TempFile &> /dev/null;
+rm $BaseFile &> /dev/null;
+
 curl $URL -o $BaseFile &> /dev/null;
 cat $BaseFile | grep "https://github.com/$Org/$Repo/commit/" > $BaseFile; # get all commits
 
@@ -23,8 +26,9 @@ while [ "$stop" == "" ]; do
     mv $TempFile $BaseFile; # Update base commit list.
     ./MiniPipeline.sh;
   fi
-  # rm $TempFile &> /dev/null;
+  rm $TempFile &> /dev/null;
   stop=$(cat stop 2> /dev/null);
+  echo " - ";
   sleep 1m;
 done
 
