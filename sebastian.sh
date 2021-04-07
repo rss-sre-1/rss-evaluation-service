@@ -20,14 +20,15 @@ mv $GatherFile $BaseFile;
 stop=$(cat stop 2> /dev/null);
 
 # The loop does not stop until there is a file named 'stop' with content in it.
+# Or it will stop when you enter stop="stop" in another terminal.
 while [ "$stop" == "" ]; do
   echo $(date +"%T") - ;
   curl $URL -s -o $TempFile; # 2> /dev/null;
   cat $TempFile | grep $GrepURL > $GatherFile; # get all current commits
   mv $GatherFile $TempFile;
 
-  echo "-- $(cat $BaseFile) --";
-  echo "-- $(cat $TempFile) --";
+#  echo "-- $(cat $BaseFile) --";
+#  echo "-- $(cat $TempFile) --";
   # Compare past and current commits
 
 #read -p "continue?"

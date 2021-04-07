@@ -9,7 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 @Entity
+@EqualsAndHashCode(exclude= {"qb"})
+@ToString(exclude= {"qb"})
 public class Option {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY, generator="OPTIONS_SEQ")
@@ -20,6 +27,7 @@ public class Option {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "QUESTION_ID")
+	@JsonBackReference
 	private QuestionsBank qb;
 	
 	@Column(name="correct")

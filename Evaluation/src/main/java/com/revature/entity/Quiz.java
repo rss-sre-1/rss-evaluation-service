@@ -13,10 +13,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Table(name="QUIZZES")
+
+@EqualsAndHashCode(exclude= {"questions"})
+@ToString(exclude= {"questions"})
 public class Quiz {
 	
 	@Id
@@ -51,6 +58,7 @@ public class Quiz {
 	
 	@OneToMany(mappedBy="quiz")
 	@JsonIgnoreProperties({"quiz"})
+	@JsonBackReference
 	private List<QuestionsBank> questions;
 	
 
