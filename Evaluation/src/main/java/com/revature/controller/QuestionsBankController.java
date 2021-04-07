@@ -37,6 +37,14 @@ public class QuestionsBankController {
 		this.uqss=uqsService;
 		this.abs=abService;
 	}
+	
+	@RequestMapping(value = "/admin/questions", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody()
+	public List<QuestionsBank> getQuestions (@RequestBody long id) {
+		MDC.put("Quiz questions retreived", id);
+		log.info("Questions returned");
+		return this.qks.findQuestionsByQuiz(id);
+	}
 
 	//Change endpoint from /add to /admin/add
 	 @RequestMapping(value = "/admin/add", method = RequestMethod.POST,
