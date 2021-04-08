@@ -22,9 +22,6 @@ import lombok.ToString;
 
 @Entity
 @Table(name="QUESTIONS_BANK")
-
-@EqualsAndHashCode(exclude= {"options"})
-@ToString(exclude= {"options"})
 public class QuestionsBank {
 	
 	@Id
@@ -43,7 +40,6 @@ public class QuestionsBank {
 		cascade = CascadeType.ALL,
         orphanRemoval = true	
 	)
-	@JsonBackReference
 	private List<Option> options = new ArrayList<Option>();
 	
 	//We create one transient field for quizId.
