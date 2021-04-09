@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rss-evaluation-loadtest-deployment
+  namespace: rss-evaluation
+  labels:
+    app: rss-evaluation-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rss-evaluation-service
+      track: loading
+  template:
+    metadata:
+      labels:
+        app: rss-evaluation-service
+        track: loading
+    spec:
+      containers:
+      - name: rss-evaluation-service-canary
+        image: baronvonfroglok/rss-evaluation-service:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_URL
+          valueFrom:
+            secretKeyRef:
+              name: casche-credentials
+              key: url
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: casche-credentials
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: casche-credentials
+              key: password
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 30
