@@ -1,15 +1,13 @@
 package com.revature.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.entity.AnswersBank;
-import com.revature.entity.QuestionsBank;
-import com.revature.entity.Quiz;
 import com.revature.entity.UserQuizScore;
+import com.revature.exceptions.EvaluationException;
 import com.revature.repo.AnswersBankRepository;
 import com.revature.repo.QuestionsBankRepository;
 import com.revature.repo.QuizRepository;
@@ -22,11 +20,17 @@ import io.micrometer.core.instrument.MeterRegistry;
 @Service
 public class AnswersBankService {
 
+	@Autowired
 	QuestionsBankRepository qbr;
+	@Autowired
 	QuizRepository qr;
+	@Autowired
 	SubjectRepository sr;
+	@Autowired
 	AnswersBankRepository abr;
+	@Autowired
 	UserQuizScoreRepository uqsr;
+	@Autowired
 	QuizService qs;
 	
 	private MeterRegistry meterRegistry;
@@ -42,6 +46,7 @@ public class AnswersBankService {
 	}
 	
 	//We use constructor auto-wiring to auto-wired multiple repositories.
+	//@Autowired
 	public AnswersBankService(QuestionsBankRepository qbRepository, QuizRepository qRepository, SubjectRepository sRepository, AnswersBankRepository aRepository, UserQuizScoreRepository uRepository, QuizService qService) {
 		this.qbr = qbRepository;
 		this.qr = qRepository;
@@ -55,8 +60,7 @@ public class AnswersBankService {
 		//Returns List of answers based on a specific UserQuizScore
 		public List<AnswersBank> findAnswersByAttempt(UserQuizScore attempt){
 			
-			List<AnswersBank> answers = abr.findAnswersByUserScore(attempt);
-			return answers;
+			return abr.findAnswersByUserScore(attempt).orElseThrow(() -> new EvaluationException("Unable to find answer by attempt."));
 		}
 		
 		
@@ -81,7 +85,11 @@ public class AnswersBankService {
 			ab.setQuestion(qbr.findById(ab.getQuestion().getQuestionId()).get());
 			ab.setUserScore(uqsr.findById(ab.getUserScore().getUserScoreId()).get());
 			quizGradeCounter.increment(1);
+			try {
 			return abr.save(ab);
+			} catch (Exception e) {
+				throw new EvaluationException("Unable to save answers.");
+			}
 		}
 		
 		//Method list of AnswersBank, for debugging

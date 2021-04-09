@@ -1,10 +1,12 @@
 package com.revature.service;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.entity.Quiz;
+import com.revature.exceptions.EvaluationException;
 import com.revature.repo.QuizRepository;
 import com.revature.repo.SubjectRepository;
 
@@ -25,12 +27,12 @@ public class QuizService {
 	
 	//Method to find quiz by Subject
 	public List<Quiz> findQuizBySubject(long sId) {
-		return qr.findQuizBySubject(sr.findById(sId).get());
+		return qr.findQuizBySubject(sr.findById(sId).orElseThrow(() -> new EvaluationException("Unable to find Subject by id."))).orElseThrow(() -> new EvaluationException("Unable to find Quiz by Subject Id."));
 	}
 	
 	//Method to find quiz by quiz ID.
 	public Quiz findById(Long quizid) {
-		Quiz q = qr.findById(quizid).get();
+		Quiz q = qr.findById(quizid).orElseThrow(() -> new EvaluationException("Unable to find Quiz by id."));
 		q.setSubjectId(q.getSubject().getSubjectId());
 		return q;
 	}
@@ -39,14 +41,23 @@ public class QuizService {
 	//we get only subectId from front-end and then we find subject using that subjectId. 
 	//Then we set that subject in the quiz object to insert that record into database.
 	public Quiz insertQuiz(Quiz q) { 
-		q.setSubject(sr.findById(q.getSubjectId()).get()); 
-		return qr.save(q);
+		q.setSubject(sr.findById(q.getSubjectId()).orElseThrow(() -> new EvaluationException("Unable to find Subject by id.")));
+		try {
+			return qr.save(q);
+		} catch (Exception e) {
+			throw new EvaluationException("Unable to save quiz.");
+		}
+		
 	}
 	
 	//Method to delete quiz by quiz ID.
 	public String deleteQuizById(Long id) {
-		qr.deleteById(id);
-		return "{'message':'Quiz deleted successfully'}";
+		try {
+			qr.deleteById(id);
+			return "{'message':'Quiz deleted successfully'}";
+		} catch (Exception e) {
+			throw new EvaluationException("Unable to delete Quiz by Id.");
+		}
 	}
 	
 	//Method to find all quiz.
