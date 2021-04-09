@@ -3,6 +3,7 @@ package com.revature.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -56,7 +57,11 @@ public class Quiz {
     @JoinColumn(name = "SUBJECT_ID")
     private Subject subject;
 	
-	@OneToMany(mappedBy="quiz")
+	@OneToMany(
+			mappedBy="quiz",
+			cascade = CascadeType.ALL,
+	        orphanRemoval = true
+			)
 	@JsonIgnoreProperties({"quiz"})
 	@JsonBackReference
 	private List<QuestionsBank> questions;
