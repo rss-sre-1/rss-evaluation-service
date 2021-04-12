@@ -27,12 +27,12 @@ public class QuizService {
 	
 	//Method to find quiz by Subject
 	public List<Quiz> findQuizBySubject(long sId) {
-		return qr.findQuizBySubject(sr.findById(sId).orElseThrow(() -> new EvaluationException("Unable to find Subject by id."))).orElseThrow(() -> new EvaluationException("Unable to find Quiz by Subject Id."));
+		return qr.findQuizBySubject(sr.findById(sId).orElseThrow(() -> new NoContentException("Unable to find Subject by id."))).orElseThrow(() -> new NoContentException("Unable to find Quiz by Subject Id."));
 	}
 	
 	//Method to find quiz by quiz ID.
 	public Quiz findById(Long quizid) {
-		Quiz q = qr.findById(quizid).orElseThrow(() -> new EvaluationException("Unable to find Quiz by id."));
+		Quiz q = qr.findById(quizid).orElseThrow(() -> new NoContentException("Unable to find Quiz by id."));
 		q.setSubjectId(q.getSubject().getSubjectId());
 		return q;
 	}
@@ -41,7 +41,7 @@ public class QuizService {
 	//we get only subectId from front-end and then we find subject using that subjectId. 
 	//Then we set that subject in the quiz object to insert that record into database.
 	public Quiz insertQuiz(Quiz q) { 
-		q.setSubject(sr.findById(q.getSubjectId()).orElseThrow(() -> new EvaluationException("Unable to find Subject by id.")));
+		q.setSubject(sr.findById(q.getSubjectId()).orElseThrow(() -> new NoContentException("Unable to find Subject by id.")));
 		try {
 			return qr.save(q);
 		} catch (Exception e) {

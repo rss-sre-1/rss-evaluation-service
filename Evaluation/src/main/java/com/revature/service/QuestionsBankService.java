@@ -38,12 +38,12 @@ public class QuestionsBankService {
 	//EDIT: changing parameter to int, for direct quiz id comparison
 	public List<QuestionsBank> findQuestionsByQuiz(long id){
 		//qb.setQuiz(qr.findById(qb.getQuiz().getQuizId()).get());
-		return qbr.findQuestionsByQuiz(qr.findById(id).orElse(null)).orElseThrow(() -> new EvaluationException("Unable to find Questions by Quiz id."));	
+		return qbr.findQuestionsByQuiz(qr.findById(id).orElse(null)).orElseThrow(() -> new NoContentException("Unable to find Questions by Quiz id."));	
 	}
 	
 	//Method to get question by question ID.
 	public QuestionsBank getQuestion(long questionId){
-		return this.qbr.findById(questionId).orElseThrow(() -> new EvaluationException("Unable to find Question by Question id."));
+		return this.qbr.findById(questionId).orElseThrow(() -> new NoContentException("Unable to find Question by Question id."));
 	}
 	
 	//Methods to insert question.
@@ -52,7 +52,7 @@ public class QuestionsBankService {
 	public QuestionsBank InsertQuestion(QuestionsBank qb) {
 		
 		long quiz_id = qb.getQuizId();
-		Quiz quiz = qr.findById(quiz_id).orElseThrow(() -> new EvaluationException("Unable to find Quiz by id."));
+		Quiz quiz = qr.findById(quiz_id).orElseThrow(() -> new NoContentException("Unable to find Quiz by id."));
 		qb.setQuiz(quiz); 
 		try {
 		return qbr.save(qb);

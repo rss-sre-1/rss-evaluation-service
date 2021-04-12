@@ -60,7 +60,7 @@ public class AnswersBankService {
 		//Returns List of answers based on a specific UserQuizScore
 		public List<AnswersBank> findAnswersByAttempt(UserQuizScore attempt){
 			
-			return abr.findAnswersByUserScore(attempt).orElseThrow(() -> new EvaluationException("Unable to find answer by attempt."));
+			return abr.findAnswersByUserScore(attempt).orElseThrow(() -> new NoContentException("Unable to find answer by attempt."));
 		}
 		
 		

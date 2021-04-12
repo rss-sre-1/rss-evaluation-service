@@ -20,4 +20,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 		MDC.clear();
 		return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);		
 	}
+
+	@ExceptionHandler(NoContentException.class)
+	public ResponseEntity<Object> handleNoContentException(NoContentException ex, WebRequest request){
+		String bodyOfResponse = "Exception was handled.";
+		bodyOfResponse = ex.getMessage();
+		MDC.clear();
+		return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.NO_CONTENT, request);		
+	}
 }
