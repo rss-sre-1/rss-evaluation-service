@@ -23,7 +23,7 @@ public class SubjectService {
 	
 	//MEthod to fins subject by subject ID.
 	public Subject findById(Long subjectId) {	
-		return sr.findById(subjectId).orElseThrow(() -> new EvaluationException("Unable to find Subject by id."));
+		return sr.findById(subjectId).orElseThrow(() -> new NoContentException("Unable to find Subject by id."));
 		
 	}
 	
