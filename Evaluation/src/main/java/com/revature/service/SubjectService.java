@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.entity.Subject;
 import com.revature.exceptions.EvaluationException;
+import com.revature.exceptions.NoContentException;
 import com.revature.repo.SubjectRepository;
 
 @Service
