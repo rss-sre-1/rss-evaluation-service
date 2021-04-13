@@ -1,0 +1,597 @@
+{
+  "basePath": "",
+  "definitions": {
+    "AnswersBank": {
+      "properties": {
+        "answerId": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "question": {
+          "$ref": "#/definitions/QuestionsBank"
+        },
+        "userAnswer": {
+          "type": "string"
+        },
+        "userScore": {
+          "$ref": "#/definitions/UserQuizScore"
+        }
+      },
+      "type": "object"
+    },
+    "Option": {
+      "properties": {
+        "correct": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "optid": {
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "QuestionsBank": {
+      "properties": {
+        "options": {
+          "items": {
+            "$ref": "#/definitions/Option"
+          },
+          "type": "array"
+        },
+        "question": {
+          "type": "string"
+        },
+        "questionId": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "questionValue": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "quizId": {
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "Quiz": {
+      "properties": {
+        "creatorEmail": {
+          "type": "string"
+        },
+        "questions": {
+          "items": {
+            "$ref": "#/definitions/QuestionsBank"
+          },
+          "type": "array"
+        },
+        "quizDescription": {
+          "type": "string"
+        },
+        "quizDifficulty": {
+          "type": "string"
+        },
+        "quizId": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "quizTopic": {
+          "type": "string"
+        },
+        "quizTotalPoints": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "subject": {
+          "$ref": "#/definitions/Subject"
+        },
+        "subjectId": {
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "Subject": {
+      "properties": {
+        "subjectId": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "subjectName": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "UserQuizScore": {
+      "properties": {
+        "quiz": {
+          "$ref": "#/definitions/Quiz"
+        },
+        "quizId": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "submitDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "userEmail": {
+          "type": "string"
+        },
+        "userScore": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "userScoreId": {
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "host": "rss-evaluation-service-load-test.rss-evaluation.svc.cluster.local:8080",
+  "info": {
+    "description": "This is a Spring Boot RESTful service using springdoc-openapi and OpenAPI 3.",
+    "title": "Evaluation Service API"
+  },
+  "paths": {
+    "/answer/all": {
+      "get": {
+        "operationId": "findAll",
+        "parameters": [],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/AnswersBank"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "answers-bank-controller"
+        ]
+      }
+    },
+    "/answer/{id}": {
+      "get": {
+        "operationId": "findAnswersByAttempt",
+        "parameters": [
+          {
+            "format": "int64",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/AnswersBank"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "answers-bank-controller"
+        ]
+      }
+    },
+    "/question/admin/add": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "insertQuestion",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/QuestionsBank"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/QuestionsBank"
+            }
+          }
+        },
+        "tags": [
+          "questions-bank-controller"
+        ]
+      }
+    },
+    "/question/admin/addall": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "insertAllQuestions",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/QuestionsBank"
+              },
+              "type": "array"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/QuestionsBank"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "questions-bank-controller"
+        ]
+      }
+    },
+    "/question/admin/delete": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "deleteQuestion",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/QuestionsBank"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "questions-bank-controller"
+        ]
+      }
+    },
+    "/question/admin/questions": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "getQuestions",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Quiz"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/QuestionsBank"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "questions-bank-controller"
+        ]
+      }
+    },
+    "/quiz/admin/add": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "insertQuiz",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Quiz"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Quiz"
+            }
+          }
+        },
+        "tags": [
+          "quiz-controller"
+        ]
+      }
+    },
+    "/quiz/obtain/all": {
+      "get": {
+        "operationId": "getAllQuizzes",
+        "parameters": [],
+        "produces": [
+          "application/octet-stream"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Quiz"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "quiz-controller"
+        ]
+      }
+    },
+    "/quiz/obtain/id": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "findQuizById",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Quiz"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Quiz"
+            }
+          }
+        },
+        "tags": [
+          "quiz-controller"
+        ]
+      }
+    },
+    "/quiz/obtain/subject": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "findQuizBySubjectId",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Quiz"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Quiz"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "quiz-controller"
+        ]
+      }
+    },
+    "/subject/admin/add": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "insertSubject",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Subject"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "subject-controller"
+        ]
+      }
+    },
+    "/subject/obtain/all": {
+      "get": {
+        "operationId": "getAllSubjects",
+        "parameters": [],
+        "produces": [
+          "application/octet-stream"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Subject"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "subject-controller"
+        ]
+      }
+    },
+    "/userscore/attempts": {
+      "get": {
+        "operationId": "findAttempts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userEmail",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "int64",
+            "in": "query",
+            "name": "quizId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/UserQuizScore"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "user-quiz-score-controller"
+        ]
+      }
+    },
+    "/userscore/obtain/taken": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "getTakenQuiz",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserQuizScore"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "format": "int64",
+                "type": "integer"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "user-quiz-score-controller"
+        ]
+      }
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "x-components": {}
+}
