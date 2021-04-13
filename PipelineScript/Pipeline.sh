@@ -51,13 +51,15 @@ if [ "$(diff $BaseFile $TempFile)" != "" ]; then
   #mv $TempFile $BaseFile;
 
 
-touch DF;
-err="$(aws ecr get-login-password --profile sre | docker login --username AWS --password-stdin 855430746673.dkr.ecr.us-east-1.amazonaws.com 2>&1)";
-rm DF;
-if [[ "${err:0:5}" == "error" || "${err:0:6}" == "unable" ]]; then
-  echo "ERROR: $err";
-else
-#STARTING PIPELINE (you can add/modify/remove stages)
+  touch DF;
+  err="$(aws ecr get-login-password --profile sre | docker login --username AWS --password-stdin 855430746673.dkr.ecr.us-east-1.amazonaws.com 2>&1)";
+  rm DF;
+  if [[ "${err:0:5}" == "error" || "${err:0:6}" == "unable" ]]; then
+    echo "ERROR: $err";
+  else
+
+####### ADD / MODIFY / REMOVE STAGES #######
+#STARTING PIPELINE
 #  aws ecr get-login-password --profile sre | docker login --username AWS --password-stdin 855430746673.dkr.ecr.us-east-1.amazonaws.com;
   git pull;
 
