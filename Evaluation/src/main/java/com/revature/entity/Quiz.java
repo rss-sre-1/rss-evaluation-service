@@ -3,6 +3,7 @@ package com.revature.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,10 +14,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Table(name="QUIZZES")
+
+@EqualsAndHashCode(exclude= {"questions"})
+@ToString(exclude= {"questions"})
 public class Quiz {
 	
 	@Id
@@ -49,8 +57,13 @@ public class Quiz {
     @JoinColumn(name = "SUBJECT_ID")
     private Subject subject;
 	
-	@OneToMany(mappedBy="quiz")
+	@OneToMany(
+			mappedBy="quiz",
+			cascade = CascadeType.ALL,
+	        orphanRemoval = true
+			)
 	@JsonIgnoreProperties({"quiz"})
+	@JsonBackReference
 	private List<QuestionsBank> questions;
 	
 

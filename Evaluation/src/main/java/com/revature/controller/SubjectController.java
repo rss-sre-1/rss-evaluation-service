@@ -2,17 +2,21 @@ package com.revature.controller;
 
 import java.util.List;
 
+import org.jboss.logging.MDC;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import com.revature.entity.Subject;
 import com.revature.service.SubjectService;
-import com.revature.util.LogThis;
 
 @RestController
 @RequestMapping(value="/subject")
 public class SubjectController {
+	
+	private static final Logger log= LoggerFactory.getLogger(QuestionsBankController.class);
 	
 	@Autowired
     SubjectService ss;
@@ -29,7 +33,8 @@ public class SubjectController {
 	@ResponseBody()
 	public String insertSubject (@RequestBody Subject s) {
 		//Log4j
-		LogThis.LogIt("info","Subject added"+""+s.getSubjectName());
+		MDC.put("Subject addition", s.getSubjectName());
+		log.info("Subject added"+""+s.getSubjectName());
 		return this.ss.insertSubject(s);
 			
 	}

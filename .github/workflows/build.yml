@@ -14,7 +14,7 @@ env:
   JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }} # new for handoffOne branch
   JENKINS_USER: evaluation_service
   NAMESPACE: rss-evaluation
-  CONTAINER: rss-evaluation
+  CONTAINER: rss-evaluation-service-canary
 jobs:
   sonar_maven_build:
     runs-on: ubuntu-latest

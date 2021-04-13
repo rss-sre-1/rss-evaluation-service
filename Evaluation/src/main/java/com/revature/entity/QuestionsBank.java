@@ -15,6 +15,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 @Entity
 @Table(name="QUESTIONS_BANK")
 public class QuestionsBank {
