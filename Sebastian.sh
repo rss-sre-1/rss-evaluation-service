@@ -1,7 +1,7 @@
 #!/bin/bash
 #For this program to run the pipeline, a MiniPipeline.sh file must be present in the same directory as this file.
 
-Interval="59s";
+Interval="5s";
 
 # CHECKING FOR STOP FILE
 if [ "$(ls | grep stop 2> /dev/null)" == "stop" ]; then
