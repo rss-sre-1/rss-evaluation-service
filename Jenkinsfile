@@ -39,7 +39,7 @@ pipeline {
         stage('Load Test') {
             steps {
                 sh "ls"
-                sh "curl -F file=@account-swagger.json -F 'LoadTestConfig={\"testPlanName\": \"ServiceNameService\", \"loops\": 1, \"threads\": 244, \"rampUp\": 1, \"followRedirects\" : false}' ${CONTEXT_PATH}${DOCUTEST} -o ${DOCUTEST_RESPONSE}"
+                sh "curl -F file=@evaluation-swagger.json -F 'LoadTestConfig={\"testPlanName\": \"EvaluationService\", \"loops\": 1, \"threads\": 244, \"rampUp\": 1, \"followRedirects\" : false}' ${CONTEXT_PATH}${DOCUTEST} -o ${DOCUTEST_RESPONSE}"
                 
                 script{
                     def response = readJSON file: "${DOCUTEST_RESPONSE}"
