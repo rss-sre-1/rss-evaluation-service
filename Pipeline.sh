@@ -57,7 +57,9 @@ if [ "$(diff $BaseFile $TempFile)" != "" ]; then
   touch DF;
   err="$(docker build . -f DF 2>&1)";
   rm DF;
-  if [[ "${err:0:5}" != "error" && "${err:0:6}" != "unable" ]]; then
+  if [[ "${err:0:5}" != "error" || "${err:0:6}" != "unable" ]]; then
+    echo "ERROR: $err";
+  else
 #BUILD STAGE
     docker build -t $ImageRegistry/$ImageName:$ImageTag .$DockerfileLocation;
     docker push $ImageRegistry/$ImageName:$ImageTag;
@@ -68,8 +70,6 @@ if [ "$(diff $BaseFile $TempFile)" != "" ]; then
 
 
   mv $TempFile $BaseFile;
-  else
-    echo "$err"
   fi
 
 fi
