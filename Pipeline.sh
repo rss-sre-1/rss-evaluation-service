@@ -47,26 +47,27 @@ echo "" > $TempFile;
 # CHECK IF NEW COMMIT DOES NOT MATCH OLD COMMIT
 if [ "$(diff $BaseFile $TempFile)" != "" ]; then
   #read -p "continue?"
-  echo "Change found, starting mini-pipeline.";
+  echo "Change found, starting pipeline.";
   #mv $TempFile $BaseFile;
 
+
+touch DF;
+err="$(docker build . -f DF 2>&1)";
+rm DF;
+if [[ "${err:0:5}" != "error" || "${err:0:6}" != "unable" ]]; then
+  echo "ERROR: $err";
+else
 #STARTING PIPELINE (you can add/modify/remove stages)
   aws ecr get-login-password --profile sre | docker login --username AWS --password-stdin 855430746673.dkr.ecr.us-east-1.amazonaws.com;
   git pull;
 
-  touch DF;
-  err="$(docker build . -f DF 2>&1)";
-  rm DF;
-  if [[ "${err:0:5}" != "error" || "${err:0:6}" != "unable" ]]; then
-    echo "ERROR: $err";
-  else
 #BUILD STAGE
-    docker build -t $ImageRegistry/$ImageName:$ImageTag .$DockerfileLocation;
-    docker push $ImageRegistry/$ImageName:$ImageTag;
+  docker build -t $ImageRegistry/$ImageName:$ImageTag .$DockerfileLocation;
+  docker push $ImageRegistry/$ImageName:$ImageTag;
 
 #DEPLOYMENT STAGE
-    kubectl -n $Namespace delete deployment $DeploymentName;
-    kubectl -n $Namespace apply -f $DeploymentManifestLocation;
+  kubectl -n $Namespace delete deployment $DeploymentName;
+  kubectl -n $Namespace apply -f $DeploymentManifestLocation;
 
 
   mv $TempFile $BaseFile;
