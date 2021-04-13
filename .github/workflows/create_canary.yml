@@ -1,0 +1,28 @@
+name: CREATE_CANARY
+on:
+  workflow_dispatch:
+env:
+  ECR_REPOSITORY_PREFIX: ${{ secrets.ECR_REPOSITORY_PREFIX }}
+  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_PREFIX }}-${{ secrets.APP_NAME }}
+  IMAGE_TAG: ${{ github.sha }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  PROJECT_ROOT: Evaluation
+  JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
+  NAMESPACE: rss-evaluation
+  CONTAINER: rss-evaluation
+jobs:
+  access_aws:
+    name: access AWS
+    runs-on: ubuntu-latest
+    steps:
+      - name: access AWS
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.EKS_ACCESS_KEY_ID }} --profile p3
+          aws configure set aws_secret_access_key ${{ secrets.EKS_SECRET_ACCESS_KEY }} --profile p3
+          aws configure set default.region ${{ secrets.AWS_REGION }} --profile p3
+          aws eks --region us-east-1 update-kubeconfig --profile p3 --name ${{ secrets.EKS_CLUSTER_NAME }}
+          kubectl --namespace $NAMESPACE scale --replicas=0 deployment/$NAMESPACE-loadtest-deployment
+          kubectl --namespace $NAMESPACE set image deployment/$NAMESPACE-canary-deployment $CONTAINER=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          kubectl --namespace $NAMESPACE scale --replicas=1 deployment/$NAMESPACE-canary-deployment
