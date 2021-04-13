@@ -14,7 +14,7 @@ DeploymentManifestLocation="rss-evaluation-manifests/rss-evaluation-deployment.y
 #COMMIT PROBE SETTINGS
 Org="rss-sre-1";
 Repo="rss-evaluation-service";
-#Interval="1m";
+Branch="dev";
 
 
 #ONLY CHANGE IF YOU ALREADY HAVE FILES WITH THESE NAMES WITH DATA UNRELATED TO THE PIPELINE
@@ -23,7 +23,7 @@ BaseFile="11111111112";
 TempFile="11111111111";
 
 #DO NOT CHANGE THESE VARIABLES
-URL="https://github.com/$Org/$Repo/commits/dev";
+URL="https://github.com/$Org/$Repo/commits/$Branch";
 GrepURL="https://github.com/$Org/$Repo/commit/";
 
 # CHECKING FOR BASE FILE STORING OLD COMMIT
