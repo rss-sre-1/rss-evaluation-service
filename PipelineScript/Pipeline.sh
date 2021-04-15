@@ -5,7 +5,7 @@ Namespace="rss-evaluation"
 ImageRegistry="855430746673.dkr.ecr.us-east-1.amazonaws.com";
 ImageName="matt-oberlies-sre-p3-rss-evaluation";
 ImageTag="latest";
-DockerfileLocation="/Evaluation/";
+DockerfileLocation="../Evaluation/";
 
 DeploymentName="rss-evaluation-deployment";
 ########################### THE RELATIVE PATH + MANIFEST FILENAME.
@@ -25,6 +25,14 @@ TempFile="11111111111";
 #DO NOT CHANGE THESE VARIABLES
 URL="https://github.com/$Org/$Repo/commits/$Branch";
 GrepURL="https://github.com/$Org/$Repo/commit/";
+
+# CHANGE TO PROJECT ROOT DIRECTORY GIVEN BY SEBASTIAN.SH
+if [ "$1" != "" ]; then
+  cd $1;
+fi
+## TODO - add path checking and error msg -
+
+
 
 # CHECKING FOR BASE FILE STORING OLD COMMIT
 rm $TempFile &> /dev/null;
@@ -64,7 +72,7 @@ if [ "$(diff $BaseFile $TempFile)" != "" ]; then
   git pull;
 
 #BUILD STAGE
-  docker build -t $ImageRegistry/$ImageName:$ImageTag .$DockerfileLocation;
+  docker build -t $ImageRegistry/$ImageName:$ImageTag ./$DockerfileLocation;
   docker push $ImageRegistry/$ImageName:$ImageTag;
 
 #DEPLOYMENT STAGE

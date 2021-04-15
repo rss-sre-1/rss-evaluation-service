@@ -18,11 +18,11 @@ stop=$(cat stop 2> /dev/null);
 while [ "$stop" == "" ]; do
   echo $(date +"%T") - ;
 
-##ADD PIPELINE SCRIPT LOCATIONS HERE##
-  ./Pipeline.sh;
+## ADD PIPELINE SCRIPT LOCATIONS HERE | FOLLOWED BY PROJECT DIRECTORY PATH ##
+  ./rss-evaluation-service/PipelineScript/Pipeline.sh $PWD/rss-evaluation-service/;
+  ./rss-frontend/MiniPipeline.sh $PWD/rss-frontend/;
 
-
-######################################
+##############################################################################
 
   echo " - ";
   sleep $Interval;
